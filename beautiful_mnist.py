@@ -49,5 +49,15 @@ if __name__ == "__main__":
 from extra.export_model import export_model
 from tinygrad.device import Device
 
-Device.DEFAULT = "WEBGPU"
-export_model(model, Device.DEFAULT.lower(), Tensor.randn(28,28))
+EXPORT_SUPPORTED_DEVICE = ["WEBGPU", "WEBGL", "CLANG", "CUDA", "GPU"]
+for device in EXPORT_SUPPORTED_DEVICE:
+  try:
+    print(device)
+    Device.DEFAULT = device
+    export_model(model, Device.DEFAULT.lower(), Tensor.randn(1,1,28,28))
+    print("compiled")
+  except:
+    pass
+
+
+export_model(model, Device.DEFAULT.lower(), Tensor.randn(1,1,28,28))

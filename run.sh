@@ -1,4 +1,5 @@
 #!/bin/bash
 
+source ~/tinygrad/venv/bin/activate
 export PYTHONPATH=~/tinygrad
-python ~/tinygrad/html/beautiful_mnist.py
+python ~/work/mnist.html/beautiful_mnist.py
