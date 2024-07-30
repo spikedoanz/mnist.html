@@ -9,12 +9,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            justify-content: flex-start;
+            min-height: 100vh;
             margin: 5vh;
             font-family: Consolas, Menlo, Monaco, 'Courier New', monospace;
             background-color: #11111b;
             color: #cdd6f4;
+            zoom: 100%;
         }
         h1 {
             text-align: center;
@@ -42,6 +43,16 @@
             height: 280px;
             background-color: #1e1e2e;
         }
+        #sourceCode {
+            margin-top: 100vh;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background-color: #1e1e2e;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 80vw;
+            overflow-x: auto;
+        }
     </style>
 </head>
 <body>
@@ -50,7 +61,9 @@
     <div class="button-container">
         <button onclick="clearCanvas()">Clear</button>
         <button onclick="predict()">Predict</button>
+        <button onclick="showSourceCode()">Source</button>
     </div>
+    <pre id="sourceCode"></pre>
     <script>
         const canvas = document.getElementById('drawingCanvas');
         const ctx = canvas.getContext('2d');
@@ -122,21 +135,24 @@
             const data = imageData.data;
             const flattenedVector = [];
             for (let i = 0; i < data.length; i += 4) {
-                // Check if the pixel is drawn (title color) or background
                 const isDrawn = data[i] === 0xf3 && data[i + 1] === 0x8b && data[i + 2] === 0xa8;
                 flattenedVector.push(isDrawn ? 1 : 0);
             }
             console.log("Flattened 28x28 vector:");
             console.log(flattenedVector);
             
-            // Count the number of drawn pixels
             const sum = flattenedVector.reduce((a, b) => a + b, 0);
             console.log("Number of drawn pixels (1s):", sum);
 
-            // Update the page title and heading
             const newTitle = `Number of drawn pixels: ${sum}`;
             document.title = newTitle;
             document.getElementById('heading').textContent = newTitle;
+        }
+
+        function showSourceCode() {
+            const sourceCodeElement = document.getElementById('sourceCode');
+            sourceCodeElement.textContent = document.documentElement.outerHTML;
+            sourceCodeElement.scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
